@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stylish Product Card Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        
+        .product-card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           
+            /* overflow: hidden; */
+        }
+        .product-card-content{
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            width: 350px;
+            background-color: #fff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-card-content {
+            padding: 20px;
+        }
+        .product-card h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .product-card p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        .product-card form {
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card form label {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .product-card form input, 
+        .product-card form textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .product-card form input:focus, 
+        .product-card form textarea:focus {
+            border-color: #007bff;
+        }
+        .product-card form button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .product-card form button:hover {
+            background-color: #0056b3;
+        }
+        #product-image{
+            padding: 0;
+        }
+        ::file-selector-button {
+
+width: 100px;
+background-color:#7fbf82;
+height: 40px;
+border: none;
+}::file-selector-button:hover{
+    background-color: #2ab331;
+}
+    </style>
+</head>
+<body>
+    
+    <div class="product-card">
+        <div class="product-card-content">
+            <h1 style="text-align: center;">Add New Product</h1>
+            <form id="card_form" action="submit-product-info" method="POST">
+                <label for="product-name">Product Name:</label>
+                <input type="text" id="product-name" name="product-name" required>
+                <label for="product-name">Product Image:</label>
+                <input type="file" id="product-image" name="product-name" required>
+                <label for="product-brand">Product Brand Name:</label>
+                <input type="text" id="product-brand" name="product-brand" required>
+
+                <label for="product-description">Product Description:</label>
+                <textarea id="product-description" name="product-description" rows="4" required></textarea>
+                
+                <label for="product-price">Product Price:</label>
+                <input type="number" id="product-price" name="product-price" required>
+                
+                <button id="btn" type="submit">Add Product</button>
+            </form>
+        </div>
+    </div>
+    <script type="module" src="app.js"></script>
+</body>
+</html>

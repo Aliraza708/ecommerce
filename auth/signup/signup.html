@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/auth/style.css">
+</head>
+<body>
+  <form id="Sign_up_form">
+    <div class="container">
+        <div id="signup" class="form active">
+            <h2>Signup</h2>
+            <div class="input-container">
+                <input type="text" placeholder="First Name" required>
+                <input type="text" placeholder="Last Name" required>
+            </div>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <label for="imageUpload">Date of Birth:</label>
+            <input type="date" placeholder="Date of Birth" required>
+            <label for="imageUpload">Upload Image:</label>
+            <input type="file" id="imageUpload" name="imageUpload" accept="image/*" required>
+            <button type="submit" id="submit_btn">Sign up</button>
+            <p class="toggle-btn">Already have an account? <a href="/auth/login/login.html">Sign in</a></p>
+        </div>
+    </div>
+    </form>
+    <script  type="module" src="signup.js"></script>
+</body>
+</html>
