@@ -1,59 +1,59 @@
 
-import { auth,onAuthStateChanged,signOut,db,getDoc,doc, getDocs,collection,query,where} from "../../unitly.js";
+import { auth, onAuthStateChanged, signOut, db, getDoc, doc, getDocs, collection, query, where, deleteDoc } from "../../unitly.js";
 
 const useImage = document.getElementById("useImage")
 const login_btn = document.getElementById("login_btn")
 const logout_btn = document.getElementById("logout_btn")
 const productCard_continer = document.getElementById("productCard_continer")
 
-   
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-          
-            const uid = user.uid;
-            console.log(uid)
-            useImage.style.display = "flex"
-            logout_btn.style.display = "flex"
-            login_btn.style.display = "none"
-            getimage(uid)
-            getMyProduct(uid)
-            
-            logout_btn.addEventListener("click",()=>{
-                signOut(auth)
-            })
-            
-           
-          // ...
-        } else {
-            useImage.style.display = "none"
-          logout_btn.style.display = "none"
-            login_btn.style.display = "flex"
-          
-        }
-        function getimage(uid){
 
-            const userRef =doc(db,"user",uid)
-            getDoc(userRef).then((data)=>{
-                console.log("data===>",data)
-                console.log("data===>",data.data())
-                useImage.src = data.data().img
-            })
+onAuthStateChanged(auth, (user) => {
+    if (user) {
 
-            }
-    })
+        const uid = user.uid;
+        console.log(uid)
+        useImage.style.display = "flex"
+        logout_btn.style.display = "flex"
+        login_btn.style.display = "none"
+        getimage(uid)
+        getMyProduct(uid)
 
-  async function getMyProduct(uid){
+        logout_btn.addEventListener("click", () => {
+            signOut(auth)
+        })
 
-  try{
-     const q = query(collection(db,"products"),where("createdBy","==",uid))
-     const qurerySnapshot = await getDocs(q)
-     productCard_continer.innerHTML = ""
-     qurerySnapshot.forEach((doc)=> {
-        // console.log(`${doc.id}=>${doc.data()}`)
-        const product = doc.data()
-        const{banner,productBrand,productName,productPrice}=product
-        console.log(product)
-   const pro= `<div id="productinner"> 
+
+        // ...
+    } else {
+        useImage.style.display = "none"
+        logout_btn.style.display = "none"
+        login_btn.style.display = "flex"
+
+    }
+    function getimage(uid) {
+
+        const userRef = doc(db, "user", uid)
+        getDoc(userRef).then((data) => {
+            console.log("data===>", data)
+            console.log("data===>", data.data())
+            useImage.src = data.data().img
+        })
+
+    }
+})
+
+async function getMyProduct(uid) {
+
+    try {
+        const q = query(collection(db, "products"), where("createdBy", "==", uid))
+        const qurerySnapshot = await getDocs(q)
+        productCard_continer.innerHTML = ""
+        qurerySnapshot.forEach((doc) => {
+            // console.log(`${doc.id}=>${doc.data()}`)
+            const product = doc.data()
+            const { banner, productBrand, productName, productPrice } = product
+            console.log(product)
+            const pro = `<div id="productinner"> 
         <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <a href="#">
                 <img class="p-8 rounded-t-lg" src="${banner}"/>
@@ -84,28 +84,38 @@ const productCard_continer = document.getElementById("productCard_continer")
                     </div>
                     <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">5.0</span>
                 </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-3xl font-bold text-gray-900 ">$${productPrice}</span>
+                  <span class="text-3xl font-bold text-gray-900 ">$${productPrice}</span>
+                <div class="flex mt-3 items-center justify-between">
+                  
                     <button id="${doc.id}"onclick ="cart(this)"
                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">  ${(auth?.currentUser && product?.cartProductFire?.includes(auth?.currentUser.uid) ? "Carted" : "Add to Cart")}</button>
-                </div>
+                <button id="${doc.id}"onclick ="Delete(this)"
+                       class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                       Delete 
+                       </button>
+                       </div>
             </div>
         </div>
       </div>`
-          
-      productCard_continer.innerHTML +=pro
-        
-     });
 
-  }catch{
-   alert("not")
-  }
-  }
-    
-   getproduct()     
+            productCard_continer.innerHTML += pro
 
-   
-  
+        });
+
+    } catch {
+        alert("not")
+    }
+}
+
+
+
+window.Delete = Delete
+async function Delete(e) {
+    console.log(e)
+    const delRef = doc(db, "products", e.id)
+    await deleteDoc(delRef)
+    getMyProduct(auth.currentUser.uid)
+}
 
 // web site media qure
 
@@ -113,34 +123,34 @@ const productCard_continer = document.getElementById("productCard_continer")
 const bar = document.getElementById("bar");
 const nav = document.getElementById("navbar");
 const close = document.getElementById("close");
-if(bar){
-    bar.addEventListener("click",()=>{
+if (bar) {
+    bar.addEventListener("click", () => {
         nav.classList.add("active")
     })
 }
-if(close){
-    close.addEventListener("click",()=>{
+if (close) {
+    close.addEventListener("click", () => {
         nav.classList.remove("active")
     })
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const header = document.getElementById('header');
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         const backToTopButton = document.getElementById('back-to-top');
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
-            
+
         }
-         else if (window.scrollY > 300) {
+        else if (window.scrollY > 300) {
             backToTopButton.style.display = 'flex';
         } else {
             backToTopButton.style.display = 'none';
             header.classList.remove('scrolled');
         }
-        
+
     });
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         const backToTopButton = document.getElementById('back-to-top');
         if (window.scrollY > 300) {
             backToTopButton.style.display = 'flex';
@@ -148,15 +158,15 @@ document.addEventListener("DOMContentLoaded", function() {
             backToTopButton.style.display = 'none';
         }
     });
-    
+
     // Scroll smoothly to the top
-    document.getElementById('back-to-top').addEventListener('click', function() {
+    document.getElementById('back-to-top').addEventListener('click', function () {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
     });
-    
+
 });
 
 
